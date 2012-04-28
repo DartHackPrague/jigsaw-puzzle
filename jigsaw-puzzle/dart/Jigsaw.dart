@@ -68,6 +68,12 @@ class Jigsaw{
     elm.style.height="${(((img.height)/sqrt)).toInt()}px";
     elm.style.background="url(\'img/img.jpg\') ${-left}px ${-top}px";
   }
+  int getPosition(int x, int y, ImageElement img){
+    int pozice;
+    pozice=((x/(img.width/Math.sqrt(amount))).toInt()).toInt()+(((y/(img.height/Math.sqrt(amount))).toInt()).toInt()*Math.sqrt(amount));
+    return pozice;
+    
+  }
   void ready(){
     ImageElement img= new Element.tag("img");
     img.src="img/img.jpg";
@@ -76,7 +82,9 @@ class Jigsaw{
     createPieces(amount);
     randomizePlaces();
     pieces.forEach((element) => insertDivs(element,img));
-    
+    //document.query("#board").on.drag.add((e){
+    //  print(getPosition(e.pageX, e.pageY, img));      
+    //});
     
   }
 }
