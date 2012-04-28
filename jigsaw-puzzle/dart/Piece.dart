@@ -1,12 +1,19 @@
 class Piece {
   int orgPlace;
   int actPlace;
+  int x;
+  int y;
+  
   Piece(int origPlace){
     orgPlace=origPlace;
     
   }
   int getActPlace(){
     return actPlace;
+  }
+  int getOrigPlace(){
+    return orgPlace;
+    
   }
   void setActPlace(int place){
     actPlace=place;
