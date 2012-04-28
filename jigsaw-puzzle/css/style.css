@@ -31,7 +31,7 @@ body {
     float: left;
     height: 600px;
     width: 800px;
-    
+    position:relative;
     border: #ccc solid 1px; 
 }
 
