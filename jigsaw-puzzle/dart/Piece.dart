@@ -23,4 +23,5 @@ class Piece {
     return false;  
   }
   
+  
 }
