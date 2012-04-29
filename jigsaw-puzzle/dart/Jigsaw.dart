@@ -103,8 +103,8 @@ class Jigsaw{
       
       print(posStart);
       
-      document.query("#piece_${getActualPosition(posStart)}").style.top="${e.pageY-boardTop}px";
-      document.query("#piece_${getActualPosition(posStart)}").style.left="${e.pageX-boardLeft}px";
+      document.query("#piece_${getActualPosition(posStart)}").style.top="${e.pageY-boardTop-(img.height~/(Math.sqrt(amount)*2))}px";
+      document.query("#piece_${getActualPosition(posStart)}").style.left="${e.pageX-boardLeft-(img.width~/(Math.sqrt(amount)*2))}px";
     }
     
       //return false;
@@ -126,9 +126,11 @@ class Jigsaw{
       event.preventDefault(); 
       event.stopPropagation(); 
       listen=true;
-      posStart=getPosition(event.pageX,  event.pageY, img).toInt();  
-      document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
-      document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
+      posStart=getPosition(event.pageX,  event.pageY, img).toInt(); 
+      document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop-(img.height~/(Math.sqrt(amount)*2))}px";
+      document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft-(img.width~/(Math.sqrt(amount)*2))}px";
+      //document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
+      //document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
       document.query("#piece_${getActualPosition(posStart)}").style.zIndex="1000";
       print("#piece_${posStart}");
       print("#piece_${getActualPosition(posStart)}");
