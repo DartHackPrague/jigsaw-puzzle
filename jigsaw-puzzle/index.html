@@ -1,13 +1,32 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <title>index</title>
-  </head>
-  <body>
-    <h1>index</h1>
-    <h2 id="status">dart is not running</h2>
-    <script type="application/dart" src="index"></script>
-    <script src="http://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js"></script>
-  </body>
+    <head>
+        <title>index</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+    </head>
+    <body>
+        <h1 class="gTitle">Jigsaw Puzzle 1.0</h1>
+        <div id="jigsaw">
+            <div id="topPanel">
+                <div class="gTime">Time: <span id="gTime">00:00:00</span></div>
+                <div class="gScore">Score: <span id="gScore">1000</span></div>
+           </div> <!-- topPanel --> 
+     
+           <div class="clear"></div>
+         <img src="img/img.jpg" id="sourceImage" style="display:none;"/>  
+          <div id="board">
+          	
+          </div><!-- board -->  
+            
+            <div id="rightPanel">
+                <button>Upload Image</button>
+                <button>Solve</button>
+            </div><!-- rightPanel --> 
+        
+        <div class="clear"></div>
+        </div>
+        <script type="application/dart" src="dart/Jigsaw.dart"></script>
+        <script src="http://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js"></script>
+    </body>
 </html>

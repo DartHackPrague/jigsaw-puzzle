@@ -1,0 +1,45 @@
+* { margin: 0px; padding: 0px;}
+
+body { 
+    font-family: Arial; 
+}
+
+.gTitle {
+    font-size: 24px;
+    color: #000;
+}
+
+#jigsaw {
+    width: 1210px; 
+    border: #eee solid 1px;
+}
+
+#topPanel{
+    width: 1210px;
+    border: #ccc solid 1px;;
+}
+
+#topPanel .gTime {
+  width: 200px;  
+}
+
+#topPanel .gScore{
+  width: 200px;    
+}
+
+#board{
+    float: left;
+    height: 600px;
+    width: 800px;
+    position:relative;
+    border: #ccc solid 1px; 
+}
+
+#rightPanel{
+    float: right;
+    width: 400px;
+    height: 600px;
+    border: #ccc solid 1px;
+}
+
+.clear {clear: both;}
