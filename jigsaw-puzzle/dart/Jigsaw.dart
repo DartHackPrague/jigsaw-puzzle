@@ -9,7 +9,9 @@ class Jigsaw{
   int posEnd;
   int boardTop;
   int boardLeft;
-  EventListener eventP;
+  ImageElement img;
+  bool listen;
+  //EventListener eventP;
   Jigsaw(){
     
     
@@ -91,8 +93,24 @@ class Jigsaw{
       } 
     }
   }
+  void eventListener(UIEvent e){
+    //eventP=event;
+    if (listen==true){
+      e.preventDefault(); 
+      e.stopPropagation(); 
+      
+      int pos=getPosition(e.pageX,  e.pageY, img); 
+      
+      print(posStart);
+      
+      document.query("#piece_${getActualPosition(posStart)}").style.top="${e.pageY-boardTop}px";
+      document.query("#piece_${getActualPosition(posStart)}").style.left="${e.pageX-boardLeft}px";
+    }
+    
+      //return false;
+  }
   void ready(){
-    ImageElement img= new Element.tag("img");
+    img= new Element.tag("img");
     img.src="img/img.jpg";
     print(img.height);
     pieces=new List<Piece>();
@@ -107,6 +125,7 @@ class Jigsaw{
     document.query("#board").on.mouseDown.add((event) { 
       event.preventDefault(); 
       event.stopPropagation(); 
+      listen=true;
       posStart=getPosition(event.pageX,  event.pageY, img).toInt();  
       document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
       document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
@@ -119,7 +138,9 @@ class Jigsaw{
     
     document.query("#board").on.mouseUp.add((event) { 
       event.preventDefault(); 
-      event.stopPropagation(); 
+      event.stopPropagation();
+      listen=false;
+      document.query("#board").on.mouseMove.remove(eventListener);
       
       posEnd=getPosition(event.pageX,  event.pageY, img);
       print(posEnd);
@@ -130,26 +151,27 @@ class Jigsaw{
       document.query("#piece_${getActualPosition(posEnd)}").style.left="${pieces[getActualPosition(posStart)].getX()}px";
       pieces[getActualPosition(posStart)].swichPlace(pieces[getActualPosition(posEnd)]);
       print("ended");
+      
       //document.query("#board").$dom_removeEventListener(event, event);
       return false;
       });
     
 
-    document.query("#board").on.drag.add((event) { 
-      eventP=event;
-      event.preventDefault(); 
-      event.stopPropagation(); 
+    document.query("#board").on.mouseMove.add(eventListener);
+      //eventP=event;
+      //event.preventDefault(); 
+      //event.stopPropagation(); 
       
-      int pos=getPosition(event.pageX,  event.pageY, img); 
+      //int pos=getPosition(event.pageX,  event.pageY, img); 
       
-      print(posStart);
+      //print(posStart);
       
-      document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
-      document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
+      //document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
+      //document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
       
     
-      return false;
-      });
+      //return false;
+      //});
   }
 }
 
