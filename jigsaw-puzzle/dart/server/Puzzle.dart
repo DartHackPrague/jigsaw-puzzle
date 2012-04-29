@@ -3,8 +3,10 @@ class Puzzle implements Hashable {
 	Set<Score> scores;
 	String id;
 	String url; 
+	int width;
+	int height;
 	
-	Puzzle(this.id, this.url) {
+	Puzzle(this.id, this.url, this.width, this.height) {
 	 this.scores = new Set<Score>();
 	}
 	

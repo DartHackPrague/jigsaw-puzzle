@@ -2,6 +2,9 @@
 #import('dart:json');
 //#import("dart:dom");
 #source('Piece.dart');
+#source('server/Score.dart');
+#source('server/Puzzle.dart');
+
 
 //#source('JigsawClent.dart');
 class Jigsaw{
@@ -23,6 +26,8 @@ class Jigsaw{
   bool enabled;
   String image;
   String responceStr;
+  List<Puzzle> puzzleList;
+  int picID;
   
   Jigsaw(){    
   }
@@ -57,7 +62,7 @@ class Jigsaw{
     }
   }
 
-  void insertDivs(Piece el, ImageElement img){
+  void insertDivs(Piece el){
     int i=el.getOrigPlace();
     int a=el.getActPlace();
     StringBuffer sb=new StringBuffer();
@@ -108,8 +113,23 @@ class Jigsaw{
     return image;
   }
   void setImage(String source){
+    //ImageElement imgsrc=new ImageElement();
+        
     image=source;
+    ImageElement imge= document.query("#sourceImage");
+    imge.src=source;
+    img=imge;
+    print("height:${imge.height}");
+    //print(imge.width=);
     img.src=source;
+    img.width=puzzleList[picID].width;
+    img.height=puzzleList[picID].height;
+    //ImageElement iel=new Element.tag("img");
+    //iel.src=source;
+    //print(iel.src);
+    //print("height:${iel.height}");
+    //print(iel.width);
+    
   }
   int getDifficulty(){
     return amount;
@@ -163,11 +183,12 @@ class Jigsaw{
     return totalScore;
   }
   bool restart(){
+    setImage(puzzleList[picID].url);
     pieces=new List<Piece>();
     createPieces(amount);
     randomizePlaces();
     document.query("#board").innerHTML="";
-    pieces.forEach((element) => insertDivs(element,img));
+    pieces.forEach((element) => insertDivs(element));
     boardLeft= document.query("#board").$dom_offsetLeft;
     boardTop=document.query("#board").$dom_offsetTop;
     document.query("#message").innerHTML="";
@@ -176,14 +197,31 @@ class Jigsaw{
     interval=window.setInterval(f() => updateTime(), 1000);
     enabled=true;
   }
+  int prev(){
+    if (picID<0){
+      return 0;
+    }
+    return picID--;
+  }
+  int next(){
+    if (picID>=puzzleList.length){
+      return puzzleList.length;
+    }
+    return picID++;
+  }
   void ready(){
+    picID=0;
+    puzzleList=new List<Puzzle>();
+    puzzleList.add(new Puzzle("Winlogo","img/img.jpg", 800, 600));
+    puzzleList.add(new Puzzle("Mountains","img/bastei_1.jpg", 540, 340));
+    puzzleList.add(new Puzzle("Desert","img/desert4.jpg", 640, 480));
     img= new Element.tag("img");
     setImage("img/img.jpg");
     maxTime=300;
     pieces=new List<Piece>();
     createPieces(amount);
     randomizePlaces();
-    pieces.forEach((element) => insertDivs(element,img));
+    pieces.forEach((element) => insertDivs(element));
     boardLeft= document.query("#board").$dom_offsetLeft;
     boardTop=document.query("#board").$dom_offsetTop;
     //document.query("#board").on.mouseMove.add((e){
@@ -222,17 +260,21 @@ class Jigsaw{
       window.setTimeout(f() => board.innerHTML=inText, 3000);
     });
     document.query("#prev").on.click.add((event) {
-      //ImageElement el= document.query("#thumbnail");
-      //el.src="";
+      int picIDp=prev();
+      ImageElement el= document.query("#thumbnail");
+      el.src="${puzzleList[picIDp].url}";
       SpanElement sel = document.query("#pictureLabel");
-      sel.innerHTML="prev label";
+      sel.innerHTML="${puzzleList[picIDp].id}";
+      picID=prev();
       print("prev");
     });
     document.query("#next").on.click.add((event) {
-      //ImageElement el= document.query("#thumbnail");
-      //el.src="";
+      int picIDn=next();
+      ImageElement el= document.query("#thumbnail");
+      el.src="${puzzleList[picIDn].url}";
       SpanElement sel = document.query("#pictureLabel");
-      sel.innerHTML="next label";
+      sel.innerHTML="${puzzleList[picIDn].id}";
+      
       print("next");
     });
     document.query("#board").on.mouseDown.add((event) { 
@@ -298,7 +340,7 @@ class Jigsaw{
     }
     });
 
-    req.send(""); // kick off the request to the server
+    req.send("OK"); // kick off the request to the server
     return responceStr;  
   }
 
@@ -312,5 +354,5 @@ void main() {
   puzzle.ready();
   
   
-  print(puzzle.getPuzzlesList());
+  //print(JSON.parse(request.responseText) puzzle.getPuzzlesList());
 }
