@@ -1,6 +1,8 @@
 #import("dart:html");
+#import('dart:json');
 //#import("dart:dom");
 #source('Piece.dart');
+
 //#source('JigsawClent.dart');
 class Jigsaw{
   List<Piece> pieces; 
@@ -63,7 +65,7 @@ class Jigsaw{
     var sqrt=Math.sqrt(amount);
     var div="<div id='piece_${i}'></div>";
     sb.add(div);
-    print(img.width);
+    //print(img.width);
     document.query("#board").innerHTML = sb.toString();
     Element elm=document.query("#piece_${i}");
     elm.style.position="absolute";
@@ -168,6 +170,7 @@ class Jigsaw{
     pieces.forEach((element) => insertDivs(element,img));
     boardLeft= document.query("#board").$dom_offsetLeft;
     boardTop=document.query("#board").$dom_offsetTop;
+    document.query("#message").innerHTML="";
     startTime=new Date.now();
     window.clearInterval(interval);
     interval=window.setInterval(f() => updateTime(), 1000);
@@ -267,6 +270,8 @@ class Jigsaw{
         if (checkPositions()==true){
           endTime=new Date.now();
           print("Puzzle vyřešeny!");
+          document.query("#message").innerHTML="Puzzle solved";
+          //alert("Puzzle solved");
           window.clearInterval(interval);
           enabled=false;
           };
