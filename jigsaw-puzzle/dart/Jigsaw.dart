@@ -5,6 +5,10 @@ class Jigsaw{
   List<Piece> pieces; 
   List<int> randomPlaces;
   int amount=16;
+  int posStart;
+  int posEnd;
+  int boardTop;
+  int boardLeft;
   Jigsaw(){
     
     
@@ -70,9 +74,17 @@ class Jigsaw{
   }
   int getPosition(int x, int y, ImageElement img){
     int pozice;
-    pozice=((x/(img.width/Math.sqrt(amount))).toInt()).toInt()+(((y/(img.height/Math.sqrt(amount))).toInt()).toInt()*Math.sqrt(amount));
+    x-=boardLeft;
+    y-=boardTop;
+    pozice=((x~/(img.width~/Math.sqrt(amount))))+(((y~/(img.height~/Math.sqrt(amount))))*Math.sqrt(amount));
     return pozice;
-    
+  }
+  int getActualPosition(int position){
+    for (int i = 0; i < pieces.length; i++) {
+      if(pieces[i].getActPlace()==position){
+        return(i);
+      } 
+    }
   }
   void ready(){
     ImageElement img= new Element.tag("img");
@@ -82,10 +94,50 @@ class Jigsaw{
     createPieces(amount);
     randomizePlaces();
     pieces.forEach((element) => insertDivs(element,img));
-    //document.query("#board").on.drag.add((e){
+    boardLeft= document.query("#board").$dom_offsetLeft;
+    boardTop=document.query("#board").$dom_offsetTop;
+    //document.query("#board").on.mouseMove.add((e){
     //  print(getPosition(e.pageX, e.pageY, img));      
     //});
+    document.query("#board").on.mouseDown.add((event) { 
+      event.preventDefault(); 
+      event.stopPropagation(); 
+      posStart=getPosition(event.pageX,  event.pageY, img).toInt();  
+      document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
+      document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
+      document.query("#piece_${getActualPosition(posStart)}").style.zIndex="1000";
+      print("#piece_${posStart}");
+      print("#piece_${getActualPosition(posStart)}");
+      return false;
+      });
     
+    
+    document.query("#board").on.mouseUp.add((event) { 
+      event.preventDefault(); 
+      event.stopPropagation(); 
+     
+      posEnd=getPosition(event.pageX,  event.pageY, img);
+      pieces[getActualPosition(posStart)].swichPlace(pieces[getActualPosition(posEnd)]);
+      document.query("#piece_${getActualPosition(posStart)}").style.zIndex="0";
+      print("ended");
+      return false;
+      });
+    
+
+    document.query("#board").on.mouseMove.add((event) { 
+      event.preventDefault(); 
+      event.stopPropagation(); 
+      
+      int pos=getPosition(event.pageX,  event.pageY, img); 
+      
+      print(posStart);
+      
+      document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
+      document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
+      
+    
+      return false;
+      });
   }
 }
 
