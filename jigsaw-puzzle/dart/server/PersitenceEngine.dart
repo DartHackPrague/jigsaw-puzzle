@@ -36,7 +36,7 @@ class PersitenceEngine {
 		File file = new File(storageFile);
     	
     	if (!file.existsSync()) {
-      		print("${file.fullPathSync()} does not exist");
+      		//print("${file.fullPathSync()} does not exist");
       		return {};
     	}
     	List<String> lines = file.readAsLinesSync();

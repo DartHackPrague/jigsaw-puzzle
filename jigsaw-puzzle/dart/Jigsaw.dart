@@ -1,6 +1,7 @@
 #import("dart:html");
 //#import("dart:dom");
 #source('Piece.dart');
+//#source('JigsawClent.dart');
 class Jigsaw{
   List<Piece> pieces; 
   List<int> randomPlaces;
@@ -19,6 +20,8 @@ class Jigsaw{
   int totalScore;
   bool enabled;
   String image;
+  String responceStr;
+  
   Jigsaw(){    
   }
   /*
@@ -274,9 +277,35 @@ class Jigsaw{
 
     document.query("#board").on.mouseMove.add(eventListener);
   }
+  
+  
+  String getPuzzlesList(){
+    XMLHttpRequest req = new XMLHttpRequest(); // create a new XHR
+
+    var url = "http://localhost:8080/listpuzzles";
+    
+    req.open("GET", url); // POST to send data
+
+    req.on.readyStateChange.add((Event e) {
+    if (req.readyState == XMLHttpRequest.DONE &&
+    (req.status == 200 || req.status == 0)) {
+      responceStr=(req.responseText);
+    }
+    });
+
+    req.send(""); // kick off the request to the server
+    return responceStr;  
+  }
+
+  
 }
+
+
 
 void main() {
   Jigsaw puzzle = new Jigsaw();
   puzzle.ready();
+  
+  
+  print(puzzle.getPuzzlesList());
 }

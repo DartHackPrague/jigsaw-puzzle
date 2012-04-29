@@ -1,6 +1,6 @@
-jigsaw-puzzle/dart/Jigsaw.dart
 jigsaw-puzzle/dart/server/test/PuzzleTest.dart
+jigsaw-puzzle/dart/JigsawClent.dart
+jigsaw-puzzle/dart/server/JigsawServerSide.dart
+jigsaw-puzzle/dart/Jigsaw.dart
 jigsaw-puzzle/dart/jigsawPuzzle.dart
 jigsaw-puzzle/dart/server/test/ScoreTest.dart
-jigsaw-puzzle/dart/server/ImageHandler.dart
-jigsaw-puzzle/dart/server/JigsawServerSide.dart
