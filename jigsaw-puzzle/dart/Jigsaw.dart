@@ -235,7 +235,7 @@ class Jigsaw{
       print(el.selectedIndex);
       switch (el.selectedIndex){
         case 0:
-          setDifficulty(4);
+          setDifficulty(16);
           break;
         case 1:
           setDifficulty(49);
