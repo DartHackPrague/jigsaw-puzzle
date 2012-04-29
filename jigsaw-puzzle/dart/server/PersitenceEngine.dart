@@ -69,6 +69,7 @@ class PersitenceEngine {
 	static Map<String, Puzzle> loadScores(String scoresStr, Map<String, Puzzle> puzzles) {
 		Map readScores = JSON.parse(scoresStr);
 		readScores.forEach((k, v) => v.forEach((k2, v2) => puzzles[k.toLowerCase()].addScore(new Score(Math.parseInt(k2), new Player(v2)))));
+		
 		return puzzles;
 	}
 	
