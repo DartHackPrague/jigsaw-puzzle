@@ -15,7 +15,6 @@ void main() {
   server.listen(HOST, PORT);
 }
 
-
 void requestReceivedHandler(HttpRequest request, HttpResponse response) {
   bool modification = false;
   
@@ -49,9 +48,7 @@ void requestReceivedHandler(HttpRequest request, HttpResponse response) {
       }     
   } else if (requestUri.startsWith("/getscores")) {
       String puzzleId = UrlReader.getPuzzleId(requestUri);
-      resp = puzzles[puzzleId].getTopScores();
-  } else if (requestUri.startsWith("/getpuzzle")) {
-    
+      resp = puzzles[puzzleId].getTopScores(); 
   } else if (requestUri.startsWith("/listpuzzles")) {
      resp = HttpResponseUtil.listPuzzles();
   }
