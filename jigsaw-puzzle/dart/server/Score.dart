@@ -10,6 +10,8 @@ class Score implements Comparable, Hashable {
   
   String toString() => "[$value, $player]";
   
+  String get name() => player.name;
+  
   int hashCode() {
     final int prime = 31;
     int result = 1;
