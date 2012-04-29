@@ -5,6 +5,7 @@
 #source("Player.dart");
 #source("Score.dart");
 #source("Puzzle.dart");
+#source("PersitenceEngine.dart");
 #source("JigsawServer.dart");
 
 

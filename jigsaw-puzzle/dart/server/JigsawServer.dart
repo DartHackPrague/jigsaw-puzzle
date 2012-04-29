@@ -8,37 +8,23 @@ Map<String, Puzzle> puzzles;
 
 void main() {
   HttpServer server = new HttpServer();
-  puzzles = new Map<String, Puzzle>();
-  Puzzle puzzle1 = new Puzzle("Mountains", "http://www.kleine-saechsische-schweiz.de/bilder/schauwerkstatt/bastei_1.jpg");
-  Puzzle puzzle2 = new Puzzle("Desert", "http://www.molossia.org/pictures/desert4.jpg");
-  
-  puzzle1.addScore(new Score(1, new Player("player1")));
-  puzzle1.addScore(new Score(4, new Player("player1")));
-  puzzle1.addScore(new Score(2, new Player("player1")));
-  puzzle1.addScore(new Score(3, new Player("player1")));
-  puzzle1.addScore(new Score(7, new Player("player1")));
-  puzzle1.addScore(new Score(10, new Player("player1")));
-  puzzle1.addScore(new Score(6, new Player("player1")));
-  puzzle1.addScore(new Score(9, new Player("player1")));
-  puzzle1.addScore(new Score(5, new Player("player1")));
-  puzzle1.addScore(new Score(8, new Player("player1")));
-  
-  puzzles[puzzle1.id] = puzzle1;
-  puzzles[puzzle2.id] = puzzle2;
+  puzzles = PersitenceEngine.load();
+  print("$puzzles");
   
   server.addRequestHandler((HttpRequest request) => true, requestReceivedHandler);
   server.listen(HOST, PORT);
 }
 
-
 void requestReceivedHandler(HttpRequest request, HttpResponse response) {
+  bool modification = false;
+  
   if (LOG_REQUESTS) {
     print("Request: ${request.method} ${request.uri}");
   }
   
   String resp = null;
   String requestUri = request.uri.toLowerCase();
-  
+  try {
   if (requestUri.startsWith("/addpuzzle")) {
     Iterator it = request.queryParameters.getKeys().filter((key) => key.toUpperCase() == "URL").iterator();
     if (it.hasNext()) {
@@ -58,16 +44,20 @@ void requestReceivedHandler(HttpRequest request, HttpResponse response) {
         HttpResponseUtil.resourceNotFound(response);
       } else {
         puzzles[puzzleId].addScore(new Score(Math.parseInt(score), new Player(playerId)));
+        modification = true;
       }     
   } else if (requestUri.startsWith("/getscores")) {
-    print("here");
       String puzzleId = UrlReader.getPuzzleId(requestUri);
-      resp = puzzles[puzzleId].getTopScores();
-      
-  } else if (requestUri.startsWith("/getpuzzle")) {
-    
+      resp = puzzles[puzzleId].getTopScores(); 
   } else if (requestUri.startsWith("/listpuzzles")) {
      resp = HttpResponseUtil.listPuzzles();
+  }
+  } catch (Exception ex) {
+    print(ex);
+  }
+  
+  if (modification) {
+    PersitenceEngine.store(puzzles.getValues());
   }
   
   response.headers.set(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");

@@ -13,8 +13,9 @@ class Puzzle implements Hashable {
 	}
 
 	String getTopScores([int number=100]) {
+	  print("${scores}");
 		List<Score> sorted = new List.from(scores);
-		sorted.sort((Score score1, Score score2) => -score1.compareTo(score2));
+		sorted.sort((Score score1, Score score2) => score1.compareTo(score2));
 		int returnSize = number > scores.length ? scores.length : number;
 		StringBuffer buff = new StringBuffer();
 		
