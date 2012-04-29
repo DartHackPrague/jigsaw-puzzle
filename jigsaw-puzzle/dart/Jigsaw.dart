@@ -216,7 +216,7 @@ class Jigsaw{
     puzzleList.add(new Puzzle("Mountains","img/bastei_1.jpg", 540, 340));
     puzzleList.add(new Puzzle("Desert","img/desert4.jpg", 640, 480));
     img= new Element.tag("img");
-    setImage("img/img.jpg");
+    setImage(puzzleList[picID].url);
     maxTime=300;
     pieces=new List<Piece>();
     createPieces(amount);
