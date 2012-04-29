@@ -6,7 +6,7 @@ class PersitenceEngine {
 		Map<String, String> scoresMap = {};
 		
 		puzzlesToStore.forEach((p) => puzzleUrlMap[p.id] = p.url);
-		puzzlesToStore.forEach((p) => scoresMap[p.id] = p.getTopScores(1000));
+		puzzlesToStore.forEach((p) => scoresMap[p.id] = p.getTopScores(1000, true));
 	
     	File file = new File(storageFile);
     	if (!file.existsSync()) {
