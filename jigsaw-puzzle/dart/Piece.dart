@@ -20,8 +20,14 @@ class Piece {
   }
   void swichPlace(Piece piece){
     int place=this.getActPlace();
+    int x=this.getX();
+    int y=this.getY();
     this.setActPlace(piece.getActPlace());
+    this.setX(piece.getX());
+    this.setY(piece.getY());
     piece.setActPlace(place);
+    piece.setX(x);
+    piece.setY(y);
   }
   void setX(int x){
     this.x=x;    

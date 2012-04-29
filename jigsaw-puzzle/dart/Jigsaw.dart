@@ -9,6 +9,7 @@ class Jigsaw{
   int posEnd;
   int boardTop;
   int boardLeft;
+  EventListener eventP;
   Jigsaw(){
     
     
@@ -60,7 +61,9 @@ class Jigsaw{
     if (a>(sqrt-1)){
       leftPosition=a%sqrt*((img.width)/sqrt).toInt();
     }
+    pieces[i].setX(leftPosition);
     var topPosition=(a~/sqrt)*((img.height)/sqrt).toInt();
+    pieces[i].setY(topPosition);
     var left=i*((img.width)/sqrt).toInt();
     if (i>(sqrt-1)){
       left=i%sqrt*((img.width)/sqrt).toInt();
@@ -71,6 +74,8 @@ class Jigsaw{
     elm.style.width="${((img.width)/sqrt).toInt()}px";
     elm.style.height="${(((img.height)/sqrt)).toInt()}px";
     elm.style.background="url(\'img/img.jpg\') ${-left}px ${-top}px";
+    elm.style.display="block";
+    elm.draggable=true;
   }
   int getPosition(int x, int y, ImageElement img){
     int pozice;
@@ -115,16 +120,23 @@ class Jigsaw{
     document.query("#board").on.mouseUp.add((event) { 
       event.preventDefault(); 
       event.stopPropagation(); 
-     
+      
       posEnd=getPosition(event.pageX,  event.pageY, img);
-      pieces[getActualPosition(posStart)].swichPlace(pieces[getActualPosition(posEnd)]);
+      print(posEnd);
       document.query("#piece_${getActualPosition(posStart)}").style.zIndex="0";
+      document.query("#piece_${getActualPosition(posStart)}").style.top="${pieces[getActualPosition(posEnd)].getY()}px";
+      document.query("#piece_${getActualPosition(posStart)}").style.left="${pieces[getActualPosition(posEnd)].getX()}px";
+      document.query("#piece_${getActualPosition(posEnd)}").style.top="${pieces[getActualPosition(posStart)].getY()}px";
+      document.query("#piece_${getActualPosition(posEnd)}").style.left="${pieces[getActualPosition(posStart)].getX()}px";
+      pieces[getActualPosition(posStart)].swichPlace(pieces[getActualPosition(posEnd)]);
       print("ended");
+      //document.query("#board").$dom_removeEventListener(event, event);
       return false;
       });
     
 
-    document.query("#board").on.mouseMove.add((event) { 
+    document.query("#board").on.drag.add((event) { 
+      eventP=event;
       event.preventDefault(); 
       event.stopPropagation(); 
       
