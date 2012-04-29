@@ -99,9 +99,11 @@ class Jigsaw{
     }
   }
   String getImage(){
+    print(image);
     return image;
   }
   void setImage(String source){
+    image=source;
     img.src=source;
   }
   int getDifficulty(){
@@ -109,6 +111,7 @@ class Jigsaw{
   }
   void setDifficulty(int diff){
     amount=diff;
+    restart();
   }
   bool checkPositions(){
     for (int i = 0; i < pieces.length; i++) {
@@ -154,6 +157,19 @@ class Jigsaw{
   int getScore(){
     return totalScore;
   }
+  bool restart(){
+    pieces=new List<Piece>();
+    createPieces(amount);
+    randomizePlaces();
+    document.query("#board").innerHTML="";
+    pieces.forEach((element) => insertDivs(element,img));
+    boardLeft= document.query("#board").$dom_offsetLeft;
+    boardTop=document.query("#board").$dom_offsetTop;
+    startTime=new Date.now();
+    window.clearInterval(interval);
+    interval=window.setInterval(f() => updateTime(), 1000);
+    enabled=true;
+  }
   void ready(){
     img= new Element.tag("img");
     setImage("img/img.jpg");
@@ -170,6 +186,35 @@ class Jigsaw{
     startTime=new Date.now();
     interval=window.setInterval(f() => updateTime(), 1000);
     enabled=true;
+    document.query("#difficulty").on.change.add((event){
+      SelectElement el=document.query("#difficulty");
+      print(el.selectedIndex);
+      switch (el.selectedIndex){
+        case 0:
+          setDifficulty(4);
+          break;
+        case 1:
+          setDifficulty(49);
+          break;
+        case 2:
+          setDifficulty(100);
+          break;
+      }
+    });
+    document.query("#restart").on.click.add((event) {restart();});
+    document.query("#help").on.click.add((event) {
+      DivElement board=document.query("#board");
+      String inText= board.innerHTML;
+      board.innerHTML="<div id='helpImage'></div>";
+      DivElement helpImage=document.query("#helpImage");
+      helpImage.style.position="absolute";
+      helpImage.style.top="0px";
+      helpImage.style.left="0px";
+      helpImage.style.background="url('${getImage()}')";
+      helpImage.style.width="${img.width}px";
+      helpImage.style.height="${img.height}px";
+      window.setTimeout(f() => board.innerHTML=inText, 3000);
+    });
     document.query("#board").on.mouseDown.add((event) { 
       if (enabled==true){
         event.preventDefault(); 
@@ -178,8 +223,6 @@ class Jigsaw{
         posStart=getPosition(event.pageX,  event.pageY, img).toInt(); 
         document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop-(img.height~/(Math.sqrt(amount)*2))}px";
         document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft-(img.width~/(Math.sqrt(amount)*2))}px";
-        //document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
-        //document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
         document.query("#piece_${getActualPosition(posStart)}").style.zIndex="1000";
         //print("#piece_${posStart}");
         //print("#piece_${getActualPosition(posStart)}");
