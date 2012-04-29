@@ -18,10 +18,8 @@ class Jigsaw{
   int totalTime;
   int totalScore;
   bool enabled;
-  //EventListener eventP;
-  Jigsaw(){
-    
-    
+  String image;
+  Jigsaw(){    
   }
   /*
   * Will intiate the pieces
@@ -41,7 +39,7 @@ class Jigsaw{
     //listSorted.forEach((element) => print(element));
     for (int i = 0; i < pieces.length; i++) {
       pieces[i].setActPlace(listSorted[i]);
-      print("i=${i}:${listSorted[i]}");
+      //print("i=${i}:${listSorted[i]}");
     }
   }
   void shuffle(List<int> list) {
@@ -82,7 +80,7 @@ class Jigsaw{
     elm.style.top="${topPosition}px";
     elm.style.width="${((img.width)/sqrt).toInt()}px";
     elm.style.height="${(((img.height)/sqrt)).toInt()}px";
-    elm.style.background="url(\'img/img.jpg\') ${-left}px ${-top}px";
+    elm.style.background="url(\'${img.src}\') ${-left}px ${-top}px";
     elm.style.display="block";
     elm.draggable=true;
   }
@@ -100,6 +98,18 @@ class Jigsaw{
       } 
     }
   }
+  String getImage(){
+    return image;
+  }
+  void setImage(String source){
+    img.src=source;
+  }
+  int getDifficulty(){
+    return amount;
+  }
+  void setDifficulty(int diff){
+    amount=diff;
+  }
   bool checkPositions(){
     for (int i = 0; i < pieces.length; i++) {
       if(!pieces[i].isCorrect()){
@@ -116,7 +126,7 @@ class Jigsaw{
       
       int pos=getPosition(e.pageX,  e.pageY, img); 
       
-      print(posStart);
+      //print(posStart);
       
       document.query("#piece_${getActualPosition(posStart)}").style.top="${e.pageY-boardTop-(img.height~/(Math.sqrt(amount)*2))}px";
       document.query("#piece_${getActualPosition(posStart)}").style.left="${e.pageX-boardLeft-(img.width~/(Math.sqrt(amount)*2))}px";
@@ -140,13 +150,14 @@ class Jigsaw{
       score=0;
     }
     return score;
-    
+  }
+  int getScore(){
+    return totalScore;
   }
   void ready(){
     img= new Element.tag("img");
-    img.src="img/img.jpg";
-    maxTime=20;
-    print(img.height);
+    setImage("img/img.jpg");
+    maxTime=300;
     pieces=new List<Piece>();
     createPieces(amount);
     randomizePlaces();
@@ -170,8 +181,8 @@ class Jigsaw{
         //document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
         //document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
         document.query("#piece_${getActualPosition(posStart)}").style.zIndex="1000";
-        print("#piece_${posStart}");
-        print("#piece_${getActualPosition(posStart)}");
+        //print("#piece_${posStart}");
+        //print("#piece_${getActualPosition(posStart)}");
       }
       return false;
       });
@@ -185,14 +196,14 @@ class Jigsaw{
         document.query("#board").on.mouseMove.remove(eventListener);
         
         posEnd=getPosition(event.pageX,  event.pageY, img);
-        print(posEnd);
+        //print(posEnd);
         document.query("#piece_${getActualPosition(posStart)}").style.zIndex="0";
         document.query("#piece_${getActualPosition(posStart)}").style.top="${pieces[getActualPosition(posEnd)].getY()}px";
         document.query("#piece_${getActualPosition(posStart)}").style.left="${pieces[getActualPosition(posEnd)].getX()}px";
         document.query("#piece_${getActualPosition(posEnd)}").style.top="${pieces[getActualPosition(posStart)].getY()}px";
         document.query("#piece_${getActualPosition(posEnd)}").style.left="${pieces[getActualPosition(posStart)].getX()}px";
         pieces[getActualPosition(posStart)].swichPlace(pieces[getActualPosition(posEnd)]);
-        print("ended");
+        //print("ended");
         if (checkPositions()==true){
           endTime=new Date.now();
           print("Puzzle vyřešeny!");
@@ -205,20 +216,6 @@ class Jigsaw{
     
 
     document.query("#board").on.mouseMove.add(eventListener);
-      //eventP=event;
-      //event.preventDefault(); 
-      //event.stopPropagation(); 
-      
-      //int pos=getPosition(event.pageX,  event.pageY, img); 
-      
-      //print(posStart);
-      
-      //document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
-      //document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
-      
-    
-      //return false;
-      //});
   }
 }
 
