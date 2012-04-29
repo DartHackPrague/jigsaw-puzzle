@@ -1,6 +1,5 @@
 dart/server/test/PuzzleTest.dart
 dart/server/JigsawServerSide.dart
-dart/server/ImageHandler.dart
-jigsawPuzzle.dart
+dart/jigsawPuzzle.dart
 dart/server/test/ScoreTest.dart
 dart/Jigsaw.dart
