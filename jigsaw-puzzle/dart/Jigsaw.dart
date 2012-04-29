@@ -183,9 +183,9 @@ class Jigsaw{
     //document.query("#board").on.mouseMove.add((e){
     //  print(getPosition(e.pageX, e.pageY, img));      
     //});
-    startTime=new Date.now();
-    interval=window.setInterval(f() => updateTime(), 1000);
-    enabled=true;
+    //startTime=new Date.now();
+    //interval=window.setInterval(f() => updateTime(), 1000);
+    enabled=false;
     document.query("#difficulty").on.change.add((event){
       SelectElement el=document.query("#difficulty");
       print(el.selectedIndex);
@@ -214,6 +214,20 @@ class Jigsaw{
       helpImage.style.width="${img.width}px";
       helpImage.style.height="${img.height}px";
       window.setTimeout(f() => board.innerHTML=inText, 3000);
+    });
+    document.query("#prev").on.click.add((event) {
+      //ImageElement el= document.query("#thumbnail");
+      //el.src="";
+      SpanElement sel = document.query("#pictureLabel");
+      sel.innerHTML="prev label";
+      print("prev");
+    });
+    document.query("#next").on.click.add((event) {
+      //ImageElement el= document.query("#thumbnail");
+      //el.src="";
+      SpanElement sel = document.query("#pictureLabel");
+      sel.innerHTML="next label";
+      print("next");
     });
     document.query("#board").on.mouseDown.add((event) { 
       if (enabled==true){

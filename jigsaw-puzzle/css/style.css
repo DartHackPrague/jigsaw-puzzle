@@ -43,3 +43,11 @@ body {
 }
 
 .clear {clear: both;}
+.gallery{
+	width:300px;
+	text-align:center;
+	margin:15px auto 10px auto;
+}
+.gallery button{
+	margin: 3px;
+}

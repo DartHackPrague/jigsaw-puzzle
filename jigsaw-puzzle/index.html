@@ -20,7 +20,11 @@
           </div><!-- board -->  
             
             <div id="rightPanel">
-                <button>Upload Image</button>
+            	<div class="gallery">
+            	<button id="prev">Prev</button><button id="next">Next</button><br />
+            	<img src="img/img.jpg" width="300" alt="imageName" id="thumbnail" /><br />
+            	<span id="pictureLabel">Picture label</span>
+            	</div>
                 <button id="help">Show image</button>
                 <br />
                 <label>Difficulty: </label><select id="difficulty">
@@ -28,7 +32,7 @@
                 	<option name="49">Medium</option>
                 	<option name="100">Hard</option>
                 </select>
-                <button id="restart">Restart</button>
+                <button id="restart">Start / Restart</button>
             </div><!-- rightPanel --> 
         
         <div class="clear"></div>
