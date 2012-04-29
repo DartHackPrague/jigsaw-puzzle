@@ -1,5 +1,5 @@
 class PersitenceEngine {
-	static final String storageFile = "config/properties2.store";
+	static final String storageFile = "/home/marek/git/jigsaw-puzzle/config/properties2.store";
 	
 	static void store(Collection<Puzzle> puzzlesToStore) {
 		Map<String, String> puzzleUrlMap = {};
@@ -37,6 +37,7 @@ class PersitenceEngine {
     	
     	if (!file.existsSync()) {
       		print("${file.fullPathSync()} does not exist");
+    	 print("not found"); 
       		return {};
     	}
     	List<String> lines = file.readAsLinesSync();
