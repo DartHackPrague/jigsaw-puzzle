@@ -11,6 +11,13 @@ class Jigsaw{
   int boardLeft;
   ImageElement img;
   bool listen;
+  Date startTime;
+  Date endTime;
+  int interval;
+  int maxTime;
+  int totalTime;
+  int totalScore;
+  bool enabled;
   //EventListener eventP;
   Jigsaw(){
     
@@ -93,6 +100,14 @@ class Jigsaw{
       } 
     }
   }
+  bool checkPositions(){
+    for (int i = 0; i < pieces.length; i++) {
+      if(!pieces[i].isCorrect()){
+        return false;
+      } 
+    }   
+    return true;
+  }
   void eventListener(UIEvent e){
     //eventP=event;
     if (listen==true){
@@ -109,9 +124,28 @@ class Jigsaw{
     
       //return false;
   }
+  void updateTime(){
+    Date time=new Date.now();
+    document.query("#gTime").innerHTML="${time.difference(startTime).inSeconds}";
+    totalTime=time.difference(startTime).inSeconds;
+    totalScore=countScore();
+    document.query("#gScore").innerHTML="${totalScore}";
+    if (totalScore<=0){
+      document.query("#gTime").style.color="red";
+    }
+  }
+  int countScore(){
+    int score=(amount*maxTime)-(totalTime*amount);
+    if (score<0){
+      score=0;
+    }
+    return score;
+    
+  }
   void ready(){
     img= new Element.tag("img");
     img.src="img/img.jpg";
+    maxTime=20;
     print(img.height);
     pieces=new List<Piece>();
     createPieces(amount);
@@ -122,39 +156,50 @@ class Jigsaw{
     //document.query("#board").on.mouseMove.add((e){
     //  print(getPosition(e.pageX, e.pageY, img));      
     //});
+    startTime=new Date.now();
+    interval=window.setInterval(f() => updateTime(), 1000);
+    enabled=true;
     document.query("#board").on.mouseDown.add((event) { 
-      event.preventDefault(); 
-      event.stopPropagation(); 
-      listen=true;
-      posStart=getPosition(event.pageX,  event.pageY, img).toInt(); 
-      document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop-(img.height~/(Math.sqrt(amount)*2))}px";
-      document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft-(img.width~/(Math.sqrt(amount)*2))}px";
-      //document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
-      //document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
-      document.query("#piece_${getActualPosition(posStart)}").style.zIndex="1000";
-      print("#piece_${posStart}");
-      print("#piece_${getActualPosition(posStart)}");
+      if (enabled==true){
+        event.preventDefault(); 
+        event.stopPropagation(); 
+        listen=true;
+        posStart=getPosition(event.pageX,  event.pageY, img).toInt(); 
+        document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop-(img.height~/(Math.sqrt(amount)*2))}px";
+        document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft-(img.width~/(Math.sqrt(amount)*2))}px";
+        //document.query("#piece_${getActualPosition(posStart)}").style.top="${event.pageY-boardTop}px";
+        //document.query("#piece_${getActualPosition(posStart)}").style.left="${event.pageX-boardLeft}px";
+        document.query("#piece_${getActualPosition(posStart)}").style.zIndex="1000";
+        print("#piece_${posStart}");
+        print("#piece_${getActualPosition(posStart)}");
+      }
       return false;
       });
     
     
     document.query("#board").on.mouseUp.add((event) { 
-      event.preventDefault(); 
-      event.stopPropagation();
-      listen=false;
-      document.query("#board").on.mouseMove.remove(eventListener);
-      
-      posEnd=getPosition(event.pageX,  event.pageY, img);
-      print(posEnd);
-      document.query("#piece_${getActualPosition(posStart)}").style.zIndex="0";
-      document.query("#piece_${getActualPosition(posStart)}").style.top="${pieces[getActualPosition(posEnd)].getY()}px";
-      document.query("#piece_${getActualPosition(posStart)}").style.left="${pieces[getActualPosition(posEnd)].getX()}px";
-      document.query("#piece_${getActualPosition(posEnd)}").style.top="${pieces[getActualPosition(posStart)].getY()}px";
-      document.query("#piece_${getActualPosition(posEnd)}").style.left="${pieces[getActualPosition(posStart)].getX()}px";
-      pieces[getActualPosition(posStart)].swichPlace(pieces[getActualPosition(posEnd)]);
-      print("ended");
-      
-      //document.query("#board").$dom_removeEventListener(event, event);
+      if (enabled==true){
+        event.preventDefault(); 
+        event.stopPropagation();
+        listen=false;
+        document.query("#board").on.mouseMove.remove(eventListener);
+        
+        posEnd=getPosition(event.pageX,  event.pageY, img);
+        print(posEnd);
+        document.query("#piece_${getActualPosition(posStart)}").style.zIndex="0";
+        document.query("#piece_${getActualPosition(posStart)}").style.top="${pieces[getActualPosition(posEnd)].getY()}px";
+        document.query("#piece_${getActualPosition(posStart)}").style.left="${pieces[getActualPosition(posEnd)].getX()}px";
+        document.query("#piece_${getActualPosition(posEnd)}").style.top="${pieces[getActualPosition(posStart)].getY()}px";
+        document.query("#piece_${getActualPosition(posEnd)}").style.left="${pieces[getActualPosition(posStart)].getX()}px";
+        pieces[getActualPosition(posStart)].swichPlace(pieces[getActualPosition(posEnd)]);
+        print("ended");
+        if (checkPositions()==true){
+          endTime=new Date.now();
+          print("Puzzle vyřešeny!");
+          window.clearInterval(interval);
+          enabled=false;
+          };
+      }
       return false;
       });
     
